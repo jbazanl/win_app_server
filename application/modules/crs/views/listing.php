@@ -110,7 +110,7 @@
                             <th class="column-title">Usable Balance</th>
                             <th class="column-title">Currency</th>
                             <!-- <th class="column-title">Web-Users</th> -->
-                            <th class="column-title">Status</th>
+                            <th class="column-title">SIP Status</th>
                             <th class="column-title no-link last"><span class="nobr">Actions</span> </th>
 
                         </tr>

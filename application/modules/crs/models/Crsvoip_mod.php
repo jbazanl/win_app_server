@@ -25,19 +25,24 @@ class Crsvoip_mod extends CI_Model {
         $logged_account_id = get_logged_account_id();
         $final_return_array = array();
         try {
-            $sql = "SELECT * FROM (SELECT account.account_id, account.parent_account_id, account.account_type , (select tariff_id from customer_voipminuts  where customer_voipminuts.account_id = account.account_id limit 1) tariff_id, (select  tariff_name from tariff where tariff_id = (select tariff_id from customer_voipminuts  where customer_voipminuts.account_id = account.account_id limit 1)) as tariff_name , account.status_id as status,
- if( account.account_type = 'CUSTOMER',( select company_name from customers where customers.account_id =  account.account_id ), 
-(select company_name from resellers where resellers.account_id =  account.account_id ) ) 
- as company_name , customer_balance.balance, customer_balance.credit_limit,
-sys_currencies.symbol, sys_currencies.name currency_name, account.dp  , users.username as web_username ,
-
-(select username  from customer_sip_account where customer_sip_account.account_id =  account.account_id limit 1) as  sip_user
-
-FROM account 
-INNER JOIN sys_currencies on sys_currencies.currency_id = account.currency_id
-left JOIN users on users.account_id = account.account_id 
-left JOIN customer_balance on customer_balance.account_id = account.account_id
- ) abcd WHERE 1";
+            $sql = "SELECT * FROM (SELECT account.account_id, account.parent_account_id, account.account_type , (select tariff_id from customer_voipminuts  where customer_voipminuts.account_id = account.account_id limit 1) tariff_id, (select  tariff_name from tariff where tariff_id = (select tariff_id from customer_voipminuts  where customer_voipminuts.account_id = account.account_id limit 1)) as tariff_name , 
+            account.status_id as status,
+            if( account.account_type = 'CUSTOMER',
+                ( select company_name from customers where customers.account_id =  account.account_id ), 
+                (select company_name from resellers where resellers.account_id =  account.account_id ) ) 
+                as company_name , 
+            customer_balance.balance, 
+            customer_balance.credit_limit,
+            sys_currencies.symbol, 
+            sys_currencies.name currency_name, 
+            account.dp, 
+            users.username as web_username,
+            (select username  from customer_sip_account where customer_sip_account.account_id =  account.account_id limit 1) as  sip_user
+            FROM account    
+            INNER JOIN sys_currencies on sys_currencies.currency_id = account.currency_id
+            left JOIN users on users.account_id = account.account_id 
+            left JOIN customer_balance on customer_balance.account_id = account.account_id
+            ) abcd WHERE 1";
             if (check_logged_user_type(array('RESELLERADMIN', 'RESELLER'))) {
                 $sql .= " AND parent_account_id = '$logged_account_id' ";
             } else {
