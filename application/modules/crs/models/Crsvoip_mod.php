@@ -57,7 +57,7 @@ class Crsvoip_mod extends CI_Model {
                         elseif ($key == 'account_type')
                             $sql .= " AND $key LIKE '%" . $value . "%' ";
                         elseif ($key == 'company_name')
-                            $sql .= " AND $key LIKE '%" . $value . "%' ";
+                            $sql .= " AND $key COLLATE utf8mb4_bin LIKE '%" . $value . "%' ";
                         elseif ($key == 'web_username')
                             $sql .= " AND web_username LIKE '%" . $value . "%' ";
                         elseif ($key == 'sip_user')
